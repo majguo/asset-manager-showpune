@@ -5,14 +5,14 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$SCRIPT_DIR/.."
 
 echo "Starting PostgreSQL container..."
-docker run -d --name assets-postgres \
+docker start assets-postgres 2>/dev/null || docker run -d --name assets-postgres \
     -e POSTGRES_DB=assets_manager \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_PASSWORD=postgres \
     -p 5432:5432 postgres:latest
 
 echo "Starting RabbitMQ container..."
-docker run -d --name assets-rabbitmq \
+docker start assets-rabbitmq 2>/dev/null || docker run -d --name assets-rabbitmq \
     -p 5672:5672 \
     -p 15672:15672 \
     rabbitmq:management
