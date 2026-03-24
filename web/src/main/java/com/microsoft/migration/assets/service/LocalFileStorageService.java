@@ -92,7 +92,9 @@ public class LocalFileStorageService implements StorageService {
         }
         
         Path targetLocation = rootLocation.resolve(filename);
-        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        try (InputStream is = file.getInputStream()) {
+            Files.copy(is, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        }
         logger.info("Stored file: {}", targetLocation);
 
         // Send message to queue for thumbnail generation
